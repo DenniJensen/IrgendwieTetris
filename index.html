@@ -1,0 +1,29 @@
+<!doctype html>
+
+<html>
+<head>
+  <title>PolymerMobileCodelab</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+
+  <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+
+  <link rel="import" href="tetris-element.html">
+
+</head>
+
+<body>
+  <!-- codelab-app></codelab-app -->
+
+  <paper-icon-button icon="arrow-back" title="arrow-back" role="button" tabindex="0" aria-label="arrow-back" onClick="document.querySelector('#tetrisElement').back()"></paper-icon-button>
+  <paper-icon-button class="red" icon="favorite" title="red icon" role="button" tabindex="1" aria-label="favorite" pressed="" active="" onClick="document.querySelector('#tetrisElement').turn()"></paper-icon-button>
+  <paper-icon-button icon="arrow-forward" title="arrow-forward" role="button" tabindex="2" aria-label="arrow-forward" onClick="document.querySelector('#tetrisElement').forward()"></paper-icon-button>
+
+  <tetris-element id="tetrisElement"></tetris-element>
+</body>
+
+</html>

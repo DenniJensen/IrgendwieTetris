@@ -1,0 +1,59 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<polymer-element name="tetris-element">
+  <template>
+     Hoppla
+     <canvas id="myCanvas" width="100%" height="100%">
+     </canvas>
+     <!-- script>
+        console.log('ready');
+        var canvas = document.getElementById("myCanvas");
+        console.log(canvas);
+        var ctx = canvas.getContext('2d');
+
+        ctx.fillStyle = "rgb(190,135,135)";
+        ctx.fillRect (20, 20, 200, 100);  // Rotes Viereck mit Ursprung (20,20)
+        ctx.fillStyle = "rgba(135,190,135,0.5)";
+        ctx.fillRect (80, 60, 300, 100);  // Grünes Viereck mit Ursprung (80,60)
+     </script -->
+  </template>
+  <script>
+    Polymer({
+      created: function() { console.log('created' + document.getElementById('myCanvas')); },
+      ready: function() { 
+        console.log('ready'); 
+        this.canvas = this.$.myCanvas;
+      },
+      attached: function () { 
+        console.log('attached' + this.canvas); 
+
+        var ctx = this.canvas.getContext('2d');
+
+        ctx.fillStyle = "rgb(190,135,135)";
+        ctx.fillRect (10, 10, 20, 20);  // Rotes Viereck mit Ursprung (20,20)
+
+        var that = this;
+        window.setInterval(function() {
+            ctx.clearRect(0, 0, that.canvas.width, that.canvas.height);
+        }, 5000);
+        
+        console.log(this.canvas.width);
+      },
+      domReady: function() { console.log('domReady' + document.getElementById('myCanvas')); },
+      detached: function() { console.log('detached' + document.getElementById('myCanvas')); },
+      attributeChanged: function(attrName, oldVal, newVal) {
+           //var newVal = this.getAttribute(attrName);
+          console.log(attrName, 'old: ' + oldVal, 'new:', newVal, document.getElementById('myCanvas'));
+      },
+      forward: function() {
+        console.log('forward');
+      },
+      back: function() {
+        console.log('back');
+      },
+      turn: function() {
+        console.log('turn');
+      }
+    });
+  </script>
+</polymer-element>

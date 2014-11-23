@@ -11,19 +11,48 @@
   <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
 
   <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+  <link rel="import" href="bower_components/paper-slider/paper-slider.html">
 
   <link rel="import" href="tetris-element.html">
 
 </head>
 
-<body>
+<body id="dabody" style="margin: 0 auto; text-align: center; background: white;">
   <!-- codelab-app></codelab-app -->
-
-  <paper-icon-button icon="arrow-back" title="arrow-back" role="button" tabindex="0" aria-label="arrow-back" onClick="document.querySelector('#tetrisElement').back()"></paper-icon-button>
-  <paper-icon-button class="red" icon="favorite" title="red icon" role="button" tabindex="1" aria-label="favorite" pressed="" active="" onClick="document.querySelector('#tetrisElement').turn()"></paper-icon-button>
-  <paper-icon-button icon="arrow-forward" title="arrow-forward" role="button" tabindex="2" aria-label="arrow-forward" onClick="document.querySelector('#tetrisElement').forward()"></paper-icon-button>
+  
 
   <tetris-element id="tetrisElement"></tetris-element>
+  
+  <div style="clear:both;"></div>
+	<div>
+	  <paper-icon-button icon="arrow-back" title="arrow-back" role="button" tabindex="0" aria-label="arrow-back" onClick="document.querySelector('#tetrisElement').back()"></paper-icon-button>
+	  <paper-icon-button style="color: red" icon="favorite" title="red icon" role="button" tabindex="1" aria-label="favorite" pressed="" active="" onClick="document.querySelector('#tetrisElement').reset()"></paper-icon-button>
+	  <paper-icon-button icon="arrow-forward" title="arrow-forward" role="button" tabindex="2" aria-label="arrow-forward" onClick="document.querySelector('#tetrisElement').forward()"></paper-icon-button>
+	</div>
+
+	<div style="clear:both;"></div>
+
+  <paper-slider id="slider" min="0" max="3300" value="2000" onChange="document.querySelector('#tetrisElement').setTime()"></paper-slider>
+
+  <script type="text/javascript">
+	function addEvent(element, eventName, callback) {
+	    if (element.addEventListener) {
+	        element.addEventListener(eventName, callback, false);
+	    } else if (element.attachEvent) {
+	        element.attachEvent("on" + eventName, callback);
+	    }
+	}
+	function Keypress(e) {
+		switch (e.keyCode) {
+			case 39: document.querySelector('#tetrisElement').forward(); break;
+			case 37: document.querySelector('#tetrisElement').back(); break;
+			case 32: document.querySelector('#tetrisElement').reset(); break;
+			default: 
+		}
+		//console.log(e);
+	}
+	addEvent(window, "keydown", Keypress);
+  </script>
 </body>
 
 </html>

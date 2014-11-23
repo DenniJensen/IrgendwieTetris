@@ -2,58 +2,103 @@
 
 <polymer-element name="tetris-element">
   <template>
-     Hoppla
-     <canvas id="myCanvas" width="100%" height="100%">
-     </canvas>
-     <!-- script>
-        console.log('ready');
-        var canvas = document.getElementById("myCanvas");
-        console.log(canvas);
-        var ctx = canvas.getContext('2d');
-
-        ctx.fillStyle = "rgb(190,135,135)";
-        ctx.fillRect (20, 20, 200, 100);  // Rotes Viereck mit Ursprung (20,20)
-        ctx.fillStyle = "rgba(135,190,135,0.5)";
-        ctx.fillRect (80, 60, 300, 100);  // Grünes Viereck mit Ursprung (80,60)
-     </script -->
+     <canvas id="myCanvas" width="250" height="250" style="border: 1px solid black;margin-top: 50px;"></canvas>
   </template>
   <script>
     Polymer({
-      created: function() { console.log('created' + document.getElementById('myCanvas')); },
+      currentcol: 2,
+      currentrow: 0,
+      time:1000,
       ready: function() { 
-        console.log('ready'); 
         this.canvas = this.$.myCanvas;
+        this.grid = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
       },
       attached: function () { 
-        console.log('attached' + this.canvas); 
-
+        var that = this;
+        this.drawGrid();        
+        // start timer
+        this.interval = setInterval(function() {
+            that.moveOneRow()}, this.time);
+      },
+      moveOneRow: function() {
+        var that = this;
+        if (this.currentrow<4 && this.grid[this.currentrow+1][this.currentcol] ==0) {
+            this.currentrow++;    
+        } else {
+            this.grid[this.currentrow][this.currentcol] = 1;
+            if (this.grid[0][2] == 1) {
+                window.clearInterval(this.interval);
+                document.getElementById("dabody").style.backgroundColor='black';                 
+            }
+            this.currentcol = 2;
+            this.currentrow = 0;
+        }
+        this.drawGrid(); 
+        window.clearInterval(this.interval);       
+        this.interval = window.setInterval(function() {
+            that.moveOneRow()}, this.time);
+      },
+      drawGrid: function() {
         var ctx = this.canvas.getContext('2d');
 
-        ctx.fillStyle = "rgb(190,135,135)";
-        ctx.fillRect (10, 10, 20, 20);  // Rotes Viereck mit Ursprung (20,20)
+        // clean grid
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        var that = this;
-        window.setInterval(function() {
-            ctx.clearRect(0, 0, that.canvas.width, that.canvas.height);
-        }, 5000);
-        
-        console.log(this.canvas.width);
+        // draw current block
+        ctx.fillStyle = "rgb(190,135,135)";
+        //console.log("row " + this.currentrow + ", cols " + this.currentrow);
+        this.drawRect(this.currentcol, this.currentrow);
+
+        var r = Math.floor(Math.random() * (200 - 0)) + 0;
+        var g = Math.floor(Math.random() * (200 - 0)) + 0;
+        var b = Math.floor(Math.random() * (200 - 0)) + 0;
+        ctx.fillStyle = "rgb("+r+","+g+","+b+")";
+        // draw grids
+        for (var i=0; i<this.grid.length; i++) {
+            for (j=0; j<this.grid[i].length; j++) {
+                if (this.grid[i][j]>0) {
+                    this.drawRect(j,i);
+                }
+            }
+        }
+
       },
-      domReady: function() { console.log('domReady' + document.getElementById('myCanvas')); },
-      detached: function() { console.log('detached' + document.getElementById('myCanvas')); },
+      drawRect: function(col, row) {
+        var ctx = this.canvas.getContext('2d');
+        
+        // x, y, width, length 
+        ctx.fillRect (col*50, row*50, 50, 50); 
+      },
       attributeChanged: function(attrName, oldVal, newVal) {
            //var newVal = this.getAttribute(attrName);
           console.log(attrName, 'old: ' + oldVal, 'new:', newVal, document.getElementById('myCanvas'));
       },
       forward: function() {
         console.log('forward');
+        if (this.currentcol<4 && this.grid[this.currentrow][this.currentcol+1] ==0) {
+            this.currentcol++;
+            this.drawGrid();
+        }        
       },
       back: function() {
         console.log('back');
+        if (this.currentcol>0 && this.grid[this.currentrow][this.currentcol-1] ==0) {
+            this.currentcol--;
+            this.drawGrid();
+        }        
       },
-      turn: function() {
-        console.log('turn');
+      reset: function() {
+        console.log('reset');
+        this.grid = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
+        this.currentcol = 2;
+        this.currentrow = 0;
+        document.getElementById("dabody").style.backgroundColor='white';
+      },
+      setTime: function() {
+        console.log(document.getElementById('slider').immediateValue);
+        this.time=3000-document.getElementById('slider').immediateValue;
       }
+      
     });
   </script>
 </polymer-element>
